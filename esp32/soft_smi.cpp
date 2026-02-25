@@ -123,7 +123,7 @@ uint16_t smi_read_reg(uint8_t phyAddr, uint8_t regAddr)
     smi_write_n_bit(&opData, SMI_FRAME_OP_BIT_LEN);
 
     uint8_t praddr[2] = {0};
-    praddr[0] = (phyAddr << 5) | ((regAddr & 0x1C) >> 2);
+    praddr[0] = (phyAddr << 3) | ((regAddr & 0x1C) >> 2);
     praddr[1] = (regAddr & 0x3) << 6;
     smi_write_n_bit(praddr, SMI_FRAME_PRADDR_BIT_LEN);
 
@@ -159,11 +159,11 @@ void smi_set_reg(uint8_t phyAddr, uint8_t regAddr, uint16_t regVal)
     smi_write_n_bit(&opData, SMI_FRAME_OP_BIT_LEN);
 
     uint8_t praddr[2] = {0};
-    praddr[0] = (phyAddr << 5) | ((regAddr & 0x1C) >> 2);
+    praddr[0] = (phyAddr << 3) | ((regAddr & 0x1C) >> 2);
     praddr[1] = (regAddr & 0x3) << 6;
     smi_write_n_bit(praddr, SMI_FRAME_PRADDR_BIT_LEN);
 
-    uint8_t taData = SMI_FRAME_WRITE_TA;
+    uint8_t taData = SMI_FRAME_WRITE_TA << 6;
     smi_write_n_bit(&taData, SMI_FRAME_WRITE_TA_BIT_LEN);
 
     uint8_t regValue[2] = {regVal >> 8, regVal & 0xFF};
